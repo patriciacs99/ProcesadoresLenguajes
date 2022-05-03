@@ -1,0 +1,18 @@
+PROGRAM procedimiento;
+PROCEDURE operaciones(primer: real;segundo:real);
+CONST PI = 3.14;
+BEGIN
+    WHILE (primer <= segundo) DO
+	BEGIN
+		primer := PI*primer;
+	END
+END;
+BEGIN
+    variable := 0;
+    REPEAT
+    BEGIN
+        variable := variable + 1;
+    END
+    UNTIL (variable = 10);
+	operaciones(0.003);
+END.

@@ -1,0 +1,16 @@
+PROGRAM identificador;
+VAR resultado, potencia, exponente: integer; 
+VAR exponente_real : real;
+FUNCTION pow(base:integer; potencia:integer):integer;
+BEGIN
+	FOR i := 0 TO potencia DO
+	VAR y: integer;
+	BEGIN
+		y:= base*base;
+	END
+END ;
+BEGIN
+	potencia := 2;
+	exponente := 3;
+	resultado := pow(potencia, exponente);
+END.

@@ -1,0 +1,18 @@
+PROGRAM par;
+VAR booleano, numero:integer;
+CONST verdadero = 1; falso = 0;
+FUNCTION esPar(num:integer):;
+BEGIN
+   IF num MOD 2 = 0 THEN
+   BEGIN
+      booleano := 1;
+   END
+   BEGIN
+      booleano := 0;
+   END
+END;
+BEGIN
+	booleano := 0;
+	numero := 3;
+	espar(numero);
+END.
