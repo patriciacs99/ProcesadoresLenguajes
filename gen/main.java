@@ -1,5 +1,4 @@
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.tree.ParseTree;
 
 import java.io.IOException;
 
@@ -8,9 +7,11 @@ public class main {
     public static void main(String[] args) {
         try {
             CharStream input = CharStreams.fromFileName(args[0]);
+            cNombreInput claseNombreInput = new cNombreInput(args[0]);
+
             gramaticaLexer lexer = new gramaticaLexer(input);
             CommonTokenStream tokens = new CommonTokenStream(lexer);
-            gramaticaParser parser = new gramaticaParser(tokens);
+            gramaticaParser parser = new gramaticaParser(tokens,claseNombreInput);
 
             parser.removeErrorListeners();
             parser.setErrorHandler(new CustomErrorStrategy());

@@ -1,13 +1,8 @@
 // Generated from C:/Users/patri/IdeaProjects/practicaGrupo23\gramatica.g4 by ANTLR 4.9.2
 
-     import java.io.*;
-     import traduccion.*;
-
-    import java.util.ArrayList;
-    import java.util.List;
-
     import java.io.PrintWriter;
     import java.io.FileWriter;
+
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -121,6 +116,26 @@ public class gramaticaParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
+
+
+	    private cNombreInput nombre;
+	    private PrintWriter fichHtml=null;
+	    public gramaticaParser(TokenStream input, cNombreInput n ){
+	        this(input);
+	        nombre = n;
+	        try{
+	            fichHtml = new PrintWriter(new FileWriter("./"+ nombre.getNombreInput() + ".html"));
+	            fichHtml.flush();
+	            }catch(Exception e){
+	                e.printStackTrace();
+	                }
+	     }
+
+	    public PrintWriter getOutput(){
+	                return fichHtml;
+	        }
+
+
 	public gramaticaParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
@@ -209,8 +224,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class PrgContext extends ParserRuleContext {
-		public Token IDENTIFIER;
-		public BlqContext blq;
 		public TerminalNode IDENTIFIER() { return getToken(gramaticaParser.IDENTIFIER, 0); }
 		public BlqContext blq() {
 			return getRuleContext(BlqContext.class,0);
@@ -243,14 +256,16 @@ public class gramaticaParser extends Parser {
 			setState(80);
 			match(T__0);
 			setState(81);
-			((PrgContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+			match(IDENTIFIER);
 			setState(82);
 			match(T__1);
 			setState(83);
-			((PrgContext)_localctx).blq = blq();
+			blq();
 			setState(84);
 			match(T__2);
-			System.out.println("PROGRAM "+ (((PrgContext)_localctx).IDENTIFIER!=null?((PrgContext)_localctx).IDENTIFIER.getText():null) + " ;\n"+ ((PrgContext)_localctx).blq.expr +"\n.");
+			fichHtml.println("<!DOCTYPE HTML><HTML><TITLE>"+nombre.getNombreInput()+"</TITLE><BODY> <A NAME =\"Inicio\"><H1> Programa: "+ nombre.getNombreInput() +"</H1><H2>Funciones y Procedimientos</H2></A><UL>" + " "+"</BODY></HTML>");
+			 fichHtml.flush();
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -265,9 +280,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class BlqContext extends ParserRuleContext {
-		public String expr;
-		public DcllistContext dcllist;
-		public SentlistContext sentlist;
 		public DcllistContext dcllist() {
 			return getRuleContext(DcllistContext.class,0);
 		}
@@ -300,14 +312,15 @@ public class gramaticaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(87);
-			((BlqContext)_localctx).dcllist = dcllist();
+			dcllist();
 			setState(88);
 			match(T__3);
 			setState(89);
-			((BlqContext)_localctx).sentlist = sentlist();
+			sentlist();
 			setState(90);
 			match(T__4);
-			((BlqContext)_localctx).expr =  ((BlqContext)_localctx).dcllist.expr + "\nBEGIN\n"+ ((BlqContext)_localctx).sentlist.expr +"\nEND\n";
+
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -322,9 +335,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class DcllistContext extends ParserRuleContext {
-		public String expr;
-		public DclContext dcl;
-		public DcllistContext dcllist;
 		public DclContext dcl() {
 			return getRuleContext(DclContext.class,0);
 		}
@@ -364,16 +374,15 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(93);
-				((DcllistContext)_localctx).dcl = dcl();
+				dcl();
 				setState(94);
-				((DcllistContext)_localctx).dcllist = dcllist();
-				((DcllistContext)_localctx).expr =  ((DcllistContext)_localctx).dcl.expr +"\n"+ ((DcllistContext)_localctx).dcllist.expr;
+				dcllist();
+
 				}
 				break;
 			case T__3:
 				enterOuterAlt(_localctx, 2);
 				{
-				((DcllistContext)_localctx).expr =  "";
 				}
 				break;
 			default:
@@ -392,9 +401,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class SentlistContext extends ParserRuleContext {
-		public String expr;
-		public SentContext sent;
-		public Sentlist1Context sentlist1;
 		public SentContext sent() {
 			return getRuleContext(SentContext.class,0);
 		}
@@ -427,10 +433,10 @@ public class gramaticaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(100);
-			((SentlistContext)_localctx).sent = sent();
+			sent();
 			setState(101);
-			((SentlistContext)_localctx).sentlist1 = sentlist1();
-			((SentlistContext)_localctx).expr =  ((SentlistContext)_localctx).sent.expr + "\n" +((SentlistContext)_localctx).sentlist1.expr;
+			sentlist1();
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -445,9 +451,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class Sentlist1Context extends ParserRuleContext {
-		public String expr;
-		public SentContext sent;
-		public Sentlist1Context sentlist1;
 		public SentContext sent() {
 			return getRuleContext(SentContext.class,0);
 		}
@@ -488,16 +491,15 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(104);
-				((Sentlist1Context)_localctx).sent = sent();
+				sent();
 				setState(105);
-				((Sentlist1Context)_localctx).sentlist1 = sentlist1();
-				((Sentlist1Context)_localctx).expr =  ((Sentlist1Context)_localctx).sent.expr + "\n" + ((Sentlist1Context)_localctx).sentlist1.expr;
+				sentlist1();
+
 				}
 				break;
 			case T__4:
 				enterOuterAlt(_localctx, 2);
 				{
-				((Sentlist1Context)_localctx).expr =  "";
 				}
 				break;
 			default:
@@ -516,11 +518,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class DclContext extends ParserRuleContext {
-		public String expr;
-		public DefcteContext defcte;
-		public DefvarContext defvar;
-		public DefprocContext defproc;
-		public DeffunContext deffun;
 		public DefcteContext defcte() {
 			return getRuleContext(DefcteContext.class,0);
 		}
@@ -563,32 +560,32 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(111);
-				((DclContext)_localctx).defcte = defcte();
-				((DclContext)_localctx).expr =  ((DclContext)_localctx).defcte.expr;
+				defcte();
+
 				}
 				break;
 			case T__7:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(114);
-				((DclContext)_localctx).defvar = defvar();
-				((DclContext)_localctx).expr =  ((DclContext)_localctx).defvar.expr;
+				defvar();
+
 				}
 				break;
 			case T__10:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(117);
-				((DclContext)_localctx).defproc = defproc();
-				((DclContext)_localctx).expr =  ((DclContext)_localctx).defproc.expr;
+				defproc();
+
 				}
 				break;
 			case T__11:
 				enterOuterAlt(_localctx, 4);
 				{
 				setState(120);
-				((DclContext)_localctx).deffun = deffun();
-				((DclContext)_localctx).expr =  ((DclContext)_localctx).deffun.expr;
+				deffun();
+
 				}
 				break;
 			default:
@@ -607,8 +604,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class DefcteContext extends ParserRuleContext {
-		public String expr;
-		public CtelistContext ctelist;
 		public CtelistContext ctelist() {
 			return getRuleContext(CtelistContext.class,0);
 		}
@@ -640,8 +635,8 @@ public class gramaticaParser extends Parser {
 			setState(125);
 			match(T__5);
 			setState(126);
-			((DefcteContext)_localctx).ctelist = ctelist();
-			((DefcteContext)_localctx).expr =  "CONST" + ((DefcteContext)_localctx).ctelist.expr;
+			ctelist();
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -656,10 +651,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class CtelistContext extends ParserRuleContext {
-		public String expr;
-		public Token IDENTIFIER;
-		public SimpvalueContext simpvalue;
-		public Ctelist1Context ctelist1;
 		public TerminalNode IDENTIFIER() { return getToken(gramaticaParser.IDENTIFIER, 0); }
 		public SimpvalueContext simpvalue() {
 			return getRuleContext(SimpvalueContext.class,0);
@@ -693,22 +684,16 @@ public class gramaticaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(129);
-			((CtelistContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+			match(IDENTIFIER);
 			setState(130);
 			match(T__6);
 			setState(131);
-			((CtelistContext)_localctx).simpvalue = simpvalue();
+			simpvalue();
 			setState(132);
 			match(T__1);
 			setState(133);
-			((CtelistContext)_localctx).ctelist1 = ctelist1();
+			ctelist1();
 
-			           ArrayList<String> lista = ((CtelistContext)_localctx).ctelist1.lista;
-			            String elems = "";
-			            for (int i = 0;i<lista.size();i++){
-			                elems = elems + lista[i];
-			            }
-			            ((CtelistContext)_localctx).expr =  (((CtelistContext)_localctx).IDENTIFIER!=null?((CtelistContext)_localctx).IDENTIFIER.getText():null) + " = " + ((CtelistContext)_localctx).simpvalue.expr + " ; "+ elems;
 
 			}
 		}
@@ -724,10 +709,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class Ctelist1Context extends ParserRuleContext {
-		public ArrayList<String> lista;
-		public Token IDENTIFIER;
-		public SimpvalueContext simpvalue;
-		public Ctelist1Context ctelist1;
 		public TerminalNode IDENTIFIER() { return getToken(gramaticaParser.IDENTIFIER, 0); }
 		public SimpvalueContext simpvalue() {
 			return getRuleContext(SimpvalueContext.class,0);
@@ -765,16 +746,16 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(136);
-				((Ctelist1Context)_localctx).IDENTIFIER = match(IDENTIFIER);
+				match(IDENTIFIER);
 				setState(137);
 				match(T__6);
 				setState(138);
-				((Ctelist1Context)_localctx).simpvalue = simpvalue();
+				simpvalue();
 				setState(139);
 				match(T__1);
 				setState(140);
-				((Ctelist1Context)_localctx).ctelist1 = ctelist1();
-				((Ctelist1Context)_localctx).lista =  ((Ctelist1Context)_localctx).ctelist1.lista.addFirst( (((Ctelist1Context)_localctx).IDENTIFIER!=null?((Ctelist1Context)_localctx).IDENTIFIER.getText():null) + " = " +((Ctelist1Context)_localctx).simpvalue.expr +" ; ");
+				ctelist1();
+
 				}
 				break;
 			case T__3:
@@ -784,7 +765,6 @@ public class gramaticaParser extends Parser {
 			case T__11:
 				enterOuterAlt(_localctx, 2);
 				{
-				((Ctelist1Context)_localctx).lista =  new ArrayList<>();
 				}
 				break;
 			default:
@@ -803,7 +783,7 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class SimpvalueContext extends ParserRuleContext {
-		public String expr;
+		public String v;
 		public Token NUMERIC_INTEGER_CONST;
 		public Token NUMERIC_REAL_CONST;
 		public Token STRING_CONST;
@@ -841,7 +821,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(146);
 				((SimpvalueContext)_localctx).NUMERIC_INTEGER_CONST = match(NUMERIC_INTEGER_CONST);
-				((SimpvalueContext)_localctx).expr =  "<SPAN CLASS=\"cte\">" + (((SimpvalueContext)_localctx).NUMERIC_INTEGER_CONST!=null?((SimpvalueContext)_localctx).NUMERIC_INTEGER_CONST.getText():null) + "</SPAN>";
+				((SimpvalueContext)_localctx).v =  "<SPAN CLASS=\"cte\">" + (((SimpvalueContext)_localctx).NUMERIC_INTEGER_CONST!=null?((SimpvalueContext)_localctx).NUMERIC_INTEGER_CONST.getText():null) + "</SPAN>";
 				}
 				break;
 			case NUMERIC_REAL_CONST:
@@ -849,7 +829,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(148);
 				((SimpvalueContext)_localctx).NUMERIC_REAL_CONST = match(NUMERIC_REAL_CONST);
-				((SimpvalueContext)_localctx).expr =  "<SPAN CLASS=\"cte\">" + (((SimpvalueContext)_localctx).NUMERIC_REAL_CONST!=null?((SimpvalueContext)_localctx).NUMERIC_REAL_CONST.getText():null) + "</SPAN>";
+				((SimpvalueContext)_localctx).v =  "<SPAN CLASS=\"cte\">" + (((SimpvalueContext)_localctx).NUMERIC_REAL_CONST!=null?((SimpvalueContext)_localctx).NUMERIC_REAL_CONST.getText():null) + "</SPAN>";
 				}
 				break;
 			case STRING_CONST:
@@ -857,7 +837,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(150);
 				((SimpvalueContext)_localctx).STRING_CONST = match(STRING_CONST);
-				((SimpvalueContext)_localctx).expr =  "<SPAN CLASS=\"cte\">" + (((SimpvalueContext)_localctx).STRING_CONST!=null?((SimpvalueContext)_localctx).STRING_CONST.getText():null) + "</SPAN>";
+				((SimpvalueContext)_localctx).v =  "<SPAN CLASS=\"cte\">" + (((SimpvalueContext)_localctx).STRING_CONST!=null?((SimpvalueContext)_localctx).STRING_CONST.getText():null) + "</SPAN>";
 				}
 				break;
 			default:
@@ -876,8 +856,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class DefvarContext extends ParserRuleContext {
-		public String expr;
-		public DefvarlistContext defvarlist;
 		public DefvarlistContext defvarlist() {
 			return getRuleContext(DefvarlistContext.class,0);
 		}
@@ -909,8 +887,8 @@ public class gramaticaParser extends Parser {
 			setState(154);
 			match(T__7);
 			setState(155);
-			((DefvarContext)_localctx).defvarlist = defvarlist();
-			((DefvarContext)_localctx).expr =  "VAR " + ((DefvarContext)_localctx).defvarlist.expr;
+			defvarlist();
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -925,10 +903,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class DefvarlistContext extends ParserRuleContext {
-		public String expr;
-		public VarlistContext varlist;
-		public TbasContext tbas;
-		public Defvarlist1Context defvarlist1;
 		public VarlistContext varlist() {
 			return getRuleContext(VarlistContext.class,0);
 		}
@@ -964,25 +938,17 @@ public class gramaticaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(158);
-			((DefvarlistContext)_localctx).varlist = varlist();
+			varlist();
 			setState(159);
 			match(T__8);
 			setState(160);
-			((DefvarlistContext)_localctx).tbas = tbas();
+			tbas();
 			setState(161);
 			match(T__1);
 			setState(162);
-			((DefvarlistContext)_localctx).defvarlist1 = defvarlist1();
+			defvarlist1();
 
-			                                      String parte = ((DefvarlistContext)_localctx).varlist.expr + " : " + ((DefvarlistContext)_localctx).tbas.t + " ; ";
-			                                     ArrayList<String> lista = ((DefvarlistContext)_localctx).defvarlist1.lista;
-			                                      String elems = "";
-			                                      for(int i = 0;i< lista.size();i++){
-			                                        elems = elems + lista[i];
-			                                      }
-			                                      ((DefvarlistContext)_localctx).expr =  parte + elems;
-
-			                                                                   
+			                                                           
 			}
 		}
 		catch (RecognitionException re) {
@@ -997,10 +963,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class Defvarlist1Context extends ParserRuleContext {
-		public ArrayList<String> lista;
-		public VarlistContext varlist;
-		public TbasContext tbas;
-		public Defvarlist1Context defvarlist1;
 		public VarlistContext varlist() {
 			return getRuleContext(VarlistContext.class,0);
 		}
@@ -1040,16 +1002,14 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(165);
-				((Defvarlist1Context)_localctx).varlist = varlist();
+				varlist();
 				setState(166);
 				match(T__8);
 				setState(167);
-				((Defvarlist1Context)_localctx).tbas = tbas();
+				tbas();
 				setState(168);
-				((Defvarlist1Context)_localctx).defvarlist1 = defvarlist1();
+				defvarlist1();
 
-				                String newElem = ((Defvarlist1Context)_localctx).varlist.expr + " : " + ((Defvarlist1Context)_localctx).tbas.t + " ; ";
-				                ((Defvarlist1Context)_localctx).lista =  ((Defvarlist1Context)_localctx).defvarlist1.lista.addFirst(newElem);
 				            
 				}
 				break;
@@ -1060,7 +1020,6 @@ public class gramaticaParser extends Parser {
 			case T__11:
 				enterOuterAlt(_localctx, 2);
 				{
-				((Defvarlist1Context)_localctx).lista =  new ArrayList<>();
 				}
 				break;
 			default:
@@ -1079,9 +1038,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class VarlistContext extends ParserRuleContext {
-		public String expr;
-		public Token IDENTIFIER;
-		public Varlist1Context varlist1;
 		public TerminalNode IDENTIFIER() { return getToken(gramaticaParser.IDENTIFIER, 0); }
 		public Varlist1Context varlist1() {
 			return getRuleContext(Varlist1Context.class,0);
@@ -1112,16 +1068,10 @@ public class gramaticaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(174);
-			((VarlistContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+			match(IDENTIFIER);
 			setState(175);
-			((VarlistContext)_localctx).varlist1 = varlist1(((VarlistContext)_localctx).IDENTIFIER);
+			varlist1();
 
-			                   ArrayList<String> lista = ((VarlistContext)_localctx).varlist1.lista;
-			                    String elems = lista[0];
-			                    for(int i = 1;i<lista.size();i++){
-			                       elems = elems + "," + lista[i];
-			                    }
-			                    ((VarlistContext)_localctx).expr =  elems;
 			                
 			}
 		}
@@ -1137,15 +1087,11 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class Varlist1Context extends ParserRuleContext {
-		public String ident;
-		public ArrayList<String> lista;
 		public VarlistContext varlist() {
 			return getRuleContext(VarlistContext.class,0);
 		}
-		public Varlist1Context(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public Varlist1Context(ParserRuleContext parent, int invokingState, String ident) {
+		public Varlist1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
-			this.ident = ident;
 		}
 		@Override public int getRuleIndex() { return RULE_varlist1; }
 		@Override
@@ -1163,8 +1109,8 @@ public class gramaticaParser extends Parser {
 		}
 	}
 
-	public final Varlist1Context varlist1(String ident) throws RecognitionException {
-		Varlist1Context _localctx = new Varlist1Context(_ctx, getState(), ident);
+	public final Varlist1Context varlist1() throws RecognitionException {
+		Varlist1Context _localctx = new Varlist1Context(_ctx, getState());
 		enterRule(_localctx, 30, RULE_varlist1);
 		try {
 			setState(183);
@@ -1178,15 +1124,13 @@ public class gramaticaParser extends Parser {
 				setState(179);
 				varlist();
 
-				                    ((Varlist1Context)_localctx).lista =  _localctx.lista.addFirst(_localctx.ident.text);
 				                    
 				}
 				break;
 			case T__8:
 				enterOuterAlt(_localctx, 2);
 				{
-				 ArrayList<String> lista = new ArrayList<>();
-				                ((Varlist1Context)_localctx).lista =  lista.addFirst(_localctx.ident.text);
+
 				             
 				}
 				break;
@@ -1206,10 +1150,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class DefprocContext extends ParserRuleContext {
-		public String expr;
-		public Token IDENTIFIER;
-		public Formal_paramlistContext formal_paramlist;
-		public BlqContext blq;
 		public TerminalNode IDENTIFIER() { return getToken(gramaticaParser.IDENTIFIER, 0); }
 		public Formal_paramlistContext formal_paramlist() {
 			return getRuleContext(Formal_paramlistContext.class,0);
@@ -1245,17 +1185,16 @@ public class gramaticaParser extends Parser {
 			setState(185);
 			match(T__10);
 			setState(186);
-			((DefprocContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+			match(IDENTIFIER);
 			setState(187);
-			((DefprocContext)_localctx).formal_paramlist = formal_paramlist();
+			formal_paramlist();
 			setState(188);
 			match(T__1);
 			setState(189);
-			((DefprocContext)_localctx).blq = blq();
+			blq();
 			setState(190);
 			match(T__1);
 
-			               ((DefprocContext)_localctx).expr =  "PROCEDURE " + (((DefprocContext)_localctx).IDENTIFIER!=null?((DefprocContext)_localctx).IDENTIFIER.getText():null) + ((DefprocContext)_localctx).formal_paramlist.expr + " ; "+ ((DefprocContext)_localctx).blq.expr +" ; ";
 
 			}
 		}
@@ -1271,11 +1210,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class DeffunContext extends ParserRuleContext {
-		public String expr;
-		public Token IDENTIFIER;
-		public Formal_paramlistContext formal_paramlist;
-		public TbasContext tbas;
-		public BlqContext blq;
 		public TerminalNode IDENTIFIER() { return getToken(gramaticaParser.IDENTIFIER, 0); }
 		public Formal_paramlistContext formal_paramlist() {
 			return getRuleContext(Formal_paramlistContext.class,0);
@@ -1314,21 +1248,19 @@ public class gramaticaParser extends Parser {
 			setState(193);
 			match(T__11);
 			setState(194);
-			((DeffunContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+			match(IDENTIFIER);
 			setState(195);
-			((DeffunContext)_localctx).formal_paramlist = formal_paramlist();
+			formal_paramlist();
 			setState(196);
 			match(T__8);
 			setState(197);
-			((DeffunContext)_localctx).tbas = tbas();
+			tbas();
 			setState(198);
 			match(T__1);
 			setState(199);
-			((DeffunContext)_localctx).blq = blq();
+			blq();
 			setState(200);
 			match(T__1);
-
-			              ((DeffunContext)_localctx).expr =  "FUNCTION " + (((DeffunContext)_localctx).IDENTIFIER!=null?((DeffunContext)_localctx).IDENTIFIER.getText():null) + ((DeffunContext)_localctx).formal_paramlist.expr + " : "+ ((DeffunContext)_localctx).tbas.t+ " ; " + ((DeffunContext)_localctx).blq.expr +" ; ";
 
 
 			}
@@ -1346,7 +1278,6 @@ public class gramaticaParser extends Parser {
 
 	public static class Formal_paramlistContext extends ParserRuleContext {
 		public String expr;
-		public Formal_paramContext formal_param;
 		public Formal_paramContext formal_param() {
 			return getRuleContext(Formal_paramContext.class,0);
 		}
@@ -1382,18 +1313,10 @@ public class gramaticaParser extends Parser {
 				setState(203);
 				match(T__12);
 				setState(204);
-				((Formal_paramlistContext)_localctx).formal_param = formal_param();
+				formal_param();
 				setState(205);
 				match(T__13);
 
-				               ArrayList<String> lista = ((Formal_paramlistContext)_localctx).formal_param.lista;
-				                String elems = "";
-				                for(int i = 0;i< lista.size()-1;i++){
-				                    elems = elems + lista[i] + "; ";
-				                }
-				                elems = elems + lista[lista.size()-1];
-
-				                ((Formal_paramlistContext)_localctx).expr =  "( "+ elems +" )";
 				              
 				}
 				break;
@@ -1401,7 +1324,6 @@ public class gramaticaParser extends Parser {
 			case T__8:
 				enterOuterAlt(_localctx, 2);
 				{
-				((Formal_paramlistContext)_localctx).expr =  "";
 				}
 				break;
 			default:
@@ -1420,10 +1342,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class Formal_paramContext extends ParserRuleContext {
-		public ArrayList<String> lista;
-		public VarlistContext varlist;
-		public TbasContext tbas;
-		public Formal_param1Context formal_param1;
 		public VarlistContext varlist() {
 			return getRuleContext(VarlistContext.class,0);
 		}
@@ -1459,14 +1377,14 @@ public class gramaticaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(211);
-			((Formal_paramContext)_localctx).varlist = varlist();
+			varlist();
 			setState(212);
 			match(T__8);
 			setState(213);
-			((Formal_paramContext)_localctx).tbas = tbas();
+			tbas();
 			setState(214);
-			((Formal_paramContext)_localctx).formal_param1 = formal_param1(((Formal_paramContext)_localctx).varlist.expr,((Formal_paramContext)_localctx).tbas.t);
-			((Formal_paramContext)_localctx).lista =  ((Formal_paramContext)_localctx).formal_param1.lista;
+			formal_param1();
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -1481,18 +1399,11 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class Formal_param1Context extends ParserRuleContext {
-		public String varlisth;
-		public String tbash;
-		public ArrayList<String> lista;
-		public Formal_paramContext formal_param;
 		public Formal_paramContext formal_param() {
 			return getRuleContext(Formal_paramContext.class,0);
 		}
-		public Formal_param1Context(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public Formal_param1Context(ParserRuleContext parent, int invokingState, String varlisth, String tbash) {
+		public Formal_param1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
-			this.varlisth = varlisth;
-			this.tbash = tbash;
 		}
 		@Override public int getRuleIndex() { return RULE_formal_param1; }
 		@Override
@@ -1510,8 +1421,8 @@ public class gramaticaParser extends Parser {
 		}
 	}
 
-	public final Formal_param1Context formal_param1(String varlisth,String tbash) throws RecognitionException {
-		Formal_param1Context _localctx = new Formal_param1Context(_ctx, getState(), varlisth, tbash);
+	public final Formal_param1Context formal_param1() throws RecognitionException {
+		Formal_param1Context _localctx = new Formal_param1Context(_ctx, getState());
 		enterRule(_localctx, 40, RULE_formal_param1);
 		try {
 			setState(222);
@@ -1523,17 +1434,14 @@ public class gramaticaParser extends Parser {
 				setState(217);
 				match(T__1);
 				setState(218);
-				((Formal_param1Context)_localctx).formal_param = formal_param();
+				formal_param();
 
-				                    ((Formal_param1Context)_localctx).formal_param.lista.add(_localctx.varlisth + " : "+ _localctx.tbash);
-				                    ((Formal_param1Context)_localctx).lista =  ((Formal_param1Context)_localctx).formal_param.lista;
 				                    
 				}
 				break;
 			case T__13:
 				enterOuterAlt(_localctx, 2);
 				{
-				((Formal_param1Context)_localctx).lista =  new ArrayList<>() ;
 				}
 				break;
 			default:
@@ -1611,13 +1519,7 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class SentContext extends ParserRuleContext {
-		public String expr;
-		public Token IDENTIFIER;
-		public AContext a;
-		public ExpcondContext expcond;
-		public BlqContext blq;
 		public ExpContext expe1;
-		public IncContext inc;
 		public ExpContext expe2;
 		public TerminalNode IDENTIFIER() { return getToken(gramaticaParser.IDENTIFIER, 0); }
 		public AContext a() {
@@ -1671,10 +1573,10 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(230);
-				((SentContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+				match(IDENTIFIER);
 				setState(231);
-				((SentContext)_localctx).a = a(((SentContext)_localctx).IDENTIFIER);
-				((SentContext)_localctx).expr =  ((SentContext)_localctx).a.expr;
+				a();
+
 				}
 				break;
 			case T__16:
@@ -1683,16 +1585,16 @@ public class gramaticaParser extends Parser {
 				setState(234);
 				match(T__16);
 				setState(235);
-				((SentContext)_localctx).expcond = expcond();
+				expcond();
 				setState(236);
 				match(T__17);
 				setState(237);
-				((SentContext)_localctx).blq = blq();
+				blq();
 				setState(238);
 				match(T__18);
 				setState(239);
-				((SentContext)_localctx).blq = blq();
-				((SentContext)_localctx).expr =  "IF "+ ((SentContext)_localctx).expcond.expr + " THEN " + ((SentContext)_localctx).blq.expr + " ELSE " + ((SentContext)_localctx).blq.expr; 
+				blq();
+				 
 				}
 				break;
 			case T__19:
@@ -1701,12 +1603,12 @@ public class gramaticaParser extends Parser {
 				setState(242);
 				match(T__19);
 				setState(243);
-				((SentContext)_localctx).expcond = expcond();
+				expcond();
 				setState(244);
 				match(T__20);
 				setState(245);
-				((SentContext)_localctx).blq = blq();
-				((SentContext)_localctx).expr =  "WHILE "+ ((SentContext)_localctx).expcond.expr + " DO " + ((SentContext)_localctx).blq.expr ;
+				blq();
+
 				}
 				break;
 			case T__21:
@@ -1715,14 +1617,14 @@ public class gramaticaParser extends Parser {
 				setState(248);
 				match(T__21);
 				setState(249);
-				((SentContext)_localctx).blq = blq();
+				blq();
 				setState(250);
 				match(T__22);
 				setState(251);
-				((SentContext)_localctx).expcond = expcond();
+				expcond();
 				setState(252);
 				match(T__1);
-				 ((SentContext)_localctx).expr =  "REPEAT "+ ((SentContext)_localctx).blq.expr + " UNTIL " + ((SentContext)_localctx).expcond.expr + " ; ";
+
 				}
 				break;
 			case T__23:
@@ -1731,20 +1633,20 @@ public class gramaticaParser extends Parser {
 				setState(255);
 				match(T__23);
 				setState(256);
-				((SentContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+				match(IDENTIFIER);
 				setState(257);
 				match(T__24);
 				setState(258);
 				((SentContext)_localctx).expe1 = exp();
 				setState(259);
-				((SentContext)_localctx).inc = inc();
+				inc();
 				setState(260);
 				((SentContext)_localctx).expe2 = exp();
 				setState(261);
 				match(T__20);
 				setState(262);
-				((SentContext)_localctx).blq = blq();
-				((SentContext)_localctx).expr =  "FOR "+ (((SentContext)_localctx).IDENTIFIER!=null?((SentContext)_localctx).IDENTIFIER.getText():null) + " := " + ((SentContext)_localctx).expe1.expr + " " + ((SentContext)_localctx).inc.incr + " " + ((SentContext)_localctx).expe2.expr + " DO " + ((SentContext)_localctx).blq.expr;
+				blq();
+
 				}
 				break;
 			default:
@@ -1763,20 +1665,14 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class AContext extends ParserRuleContext {
-		public String ident;
-		public String expr;
-		public ExpContext exp;
-		public SubpparamlistContext subpparamlist;
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
 		public SubpparamlistContext subpparamlist() {
 			return getRuleContext(SubpparamlistContext.class,0);
 		}
-		public AContext(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public AContext(ParserRuleContext parent, int invokingState, String ident) {
+		public AContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
-			this.ident = ident;
 		}
 		@Override public int getRuleIndex() { return RULE_a; }
 		@Override
@@ -1794,8 +1690,8 @@ public class gramaticaParser extends Parser {
 		}
 	}
 
-	public final AContext a(String ident) throws RecognitionException {
-		AContext _localctx = new AContext(_ctx, getState(), ident);
+	public final AContext a() throws RecognitionException {
+		AContext _localctx = new AContext(_ctx, getState());
 		enterRule(_localctx, 46, RULE_a);
 		try {
 			setState(276);
@@ -1807,10 +1703,10 @@ public class gramaticaParser extends Parser {
 				setState(267);
 				match(T__24);
 				setState(268);
-				((AContext)_localctx).exp = exp();
+				exp();
 				setState(269);
 				match(T__1);
-				((AContext)_localctx).expr =  _localctx.ident.text + " := " + ((AContext)_localctx).exp.expr + ";";
+
 				}
 				break;
 			case T__1:
@@ -1818,21 +1714,10 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(272);
-				((AContext)_localctx).subpparamlist = subpparamlist();
+				subpparamlist();
 				setState(273);
 				match(T__1);
 
-				                          ArrayList<String> lista = ((AContext)_localctx).subpparamlist.lista;
-				                           String expr = _localctx.ident.text;
-				                           if(!lista.isEmpty()){
-				                                String params = lista[0];
-				                                for(int i = 1;i<lista.size();i++){
-				                                    params = params +"," + lista[i];
-				                                }
-				                                ((AContext)_localctx).expr =  expr + " ( " + params + " )" +" ;";
-				                           }else{
-				                                 ((AContext)_localctx).expr =  expr + " ;" ;
-				                           }
 				                        
 				}
 				break;
@@ -1852,9 +1737,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class ExpContext extends ParserRuleContext {
-		public String expr;
-		public FactorContext factor;
-		public Exp1Context exp1;
 		public FactorContext factor() {
 			return getRuleContext(FactorContext.class,0);
 		}
@@ -1887,10 +1769,10 @@ public class gramaticaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(278);
-			((ExpContext)_localctx).factor = factor();
+			factor();
 			setState(279);
-			((ExpContext)_localctx).exp1 = exp1(((ExpContext)_localctx).factor.expr);
-			((ExpContext)_localctx).expr =  ((ExpContext)_localctx).exp1.expr;
+			exp1();
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -1905,20 +1787,14 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class Exp1Context extends ParserRuleContext {
-		public String factorh;
-		public String expr;
-		public OpContext op;
-		public ExpContext exp;
 		public OpContext op() {
 			return getRuleContext(OpContext.class,0);
 		}
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
-		public Exp1Context(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public Exp1Context(ParserRuleContext parent, int invokingState, String factorh) {
+		public Exp1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
-			this.factorh = factorh;
 		}
 		@Override public int getRuleIndex() { return RULE_exp1; }
 		@Override
@@ -1936,8 +1812,8 @@ public class gramaticaParser extends Parser {
 		}
 	}
 
-	public final Exp1Context exp1(String factorh) throws RecognitionException {
-		Exp1Context _localctx = new Exp1Context(_ctx, getState(), factorh);
+	public final Exp1Context exp1() throws RecognitionException {
+		Exp1Context _localctx = new Exp1Context(_ctx, getState());
 		enterRule(_localctx, 50, RULE_exp1);
 		try {
 			setState(287);
@@ -1951,10 +1827,10 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(282);
-				((Exp1Context)_localctx).op = op();
+				op();
 				setState(283);
-				((Exp1Context)_localctx).exp = exp();
-				((Exp1Context)_localctx).expr =  _localctx.factorh + ((Exp1Context)_localctx).op.opa + ((Exp1Context)_localctx).exp.expr;
+				exp();
+
 				}
 				break;
 			case T__1:
@@ -1973,7 +1849,6 @@ public class gramaticaParser extends Parser {
 			case T__40:
 				enterOuterAlt(_localctx, 2);
 				{
-				((Exp1Context)_localctx).expr =  _localctx.factorh;
 				}
 				break;
 			default:
@@ -1992,7 +1867,7 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class OpContext extends ParserRuleContext {
-		public OpAritmetico opa;
+		public String opa;
 		public OpContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2024,7 +1899,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(289);
 				match(T__25);
-				((OpContext)_localctx).opa =  OpAritmetico.SUMA;
+				((OpContext)_localctx).opa =  " + ";
 				}
 				break;
 			case T__26:
@@ -2032,7 +1907,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(291);
 				match(T__26);
-				((OpContext)_localctx).opa =  OpAritmetico.RESTA;
+				((OpContext)_localctx).opa =  " - ";
 				}
 				break;
 			case T__27:
@@ -2040,7 +1915,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(293);
 				match(T__27);
-				((OpContext)_localctx).opa =  OpAritmetico.MULT;
+				((OpContext)_localctx).opa =  " * ";
 				}
 				break;
 			case T__28:
@@ -2048,7 +1923,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(295);
 				match(T__28);
-				((OpContext)_localctx).opa =  OpAritmetico.DIV;
+				((OpContext)_localctx).opa =  " DIV ";
 				}
 				break;
 			case T__29:
@@ -2056,7 +1931,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(297);
 				match(T__29);
-				((OpContext)_localctx).opa =  OpAritmetico.MOD;
+				((OpContext)_localctx).opa =  " MOD ";
 				}
 				break;
 			default:
@@ -2075,11 +1950,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class FactorContext extends ParserRuleContext {
-		public String expr;
-		public SimpvalueContext simpvalue;
-		public ExpContext exp;
-		public Token IDENTIFIER;
-		public SubpparamlistContext subpparamlist;
 		public SimpvalueContext simpvalue() {
 			return getRuleContext(SimpvalueContext.class,0);
 		}
@@ -2122,8 +1992,8 @@ public class gramaticaParser extends Parser {
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(301);
-				((FactorContext)_localctx).simpvalue = simpvalue();
-				((FactorContext)_localctx).expr =  ((FactorContext)_localctx).simpvalue.expr;
+				simpvalue();
+
 				}
 				break;
 			case T__12:
@@ -2132,32 +2002,21 @@ public class gramaticaParser extends Parser {
 				setState(304);
 				match(T__12);
 				setState(305);
-				((FactorContext)_localctx).exp = exp();
+				exp();
 				setState(306);
 				match(T__13);
-				((FactorContext)_localctx).expr =  "(" + ((FactorContext)_localctx).exp.expr + ")";
+
 				}
 				break;
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(309);
-				((FactorContext)_localctx).IDENTIFIER = match(IDENTIFIER);
+				match(IDENTIFIER);
 				setState(310);
-				((FactorContext)_localctx).subpparamlist = subpparamlist();
+				subpparamlist();
 
-				            ArrayList<String> lista = ((FactorContext)_localctx).subpparamlist.lista;
-				            String expr = "<SPAN CLASS = \"ident\">" + (((FactorContext)_localctx).IDENTIFIER!=null?((FactorContext)_localctx).IDENTIFIER.getText():null) + "</SPAN>";
-				            if(!lista.isEmpty()){
-				                String params = lista[0];
-				                for(int i = 1;i<lista.size();i++){
-				                    params = params +"," + lista[i];
-				                }
-				                ((FactorContext)_localctx).expr =  expr + " ( " + params + " )";
-				            }else{
-				                ((FactorContext)_localctx).expr =  expr ;
-				            }
-				        
+				         
 				}
 				break;
 			default:
@@ -2176,8 +2035,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class SubpparamlistContext extends ParserRuleContext {
-		public ArrayList<String> lista;
-		public ExplistContext explist;
 		public ExplistContext explist() {
 			return getRuleContext(ExplistContext.class,0);
 		}
@@ -2213,10 +2070,10 @@ public class gramaticaParser extends Parser {
 				setState(315);
 				match(T__12);
 				setState(316);
-				((SubpparamlistContext)_localctx).explist = explist();
+				explist();
 				setState(317);
 				match(T__13);
-				((SubpparamlistContext)_localctx).lista =  ((SubpparamlistContext)_localctx).explist.lista;
+
 				}
 				break;
 			case T__1:
@@ -2240,7 +2097,6 @@ public class gramaticaParser extends Parser {
 			case T__40:
 				enterOuterAlt(_localctx, 2);
 				{
-				((SubpparamlistContext)_localctx).lista =  new ArrayList<>();
 				}
 				break;
 			default:
@@ -2259,9 +2115,6 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class ExplistContext extends ParserRuleContext {
-		public ArrayList<String> lista;
-		public ExpContext exp;
-		public Explist1Context explist1;
 		public ExpContext exp() {
 			return getRuleContext(ExpContext.class,0);
 		}
@@ -2294,10 +2147,11 @@ public class gramaticaParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(323);
-			((ExplistContext)_localctx).exp = exp();
+			exp();
 			setState(324);
-			((ExplistContext)_localctx).explist1 = explist1(((ExplistContext)_localctx).exp.expr);
-			((ExplistContext)_localctx).lista =  ((ExplistContext)_localctx).explist1.lista;
+			explist1();
+
+
 			}
 		}
 		catch (RecognitionException re) {
@@ -2312,16 +2166,11 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class Explist1Context extends ParserRuleContext {
-		public String expr;
-		public ArrayList<String> lista;
-		public ExplistContext explist;
 		public ExplistContext explist() {
 			return getRuleContext(ExplistContext.class,0);
 		}
-		public Explist1Context(ParserRuleContext parent, int invokingState) { super(parent, invokingState); }
-		public Explist1Context(ParserRuleContext parent, int invokingState, String expr) {
+		public Explist1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
-			this.expr = expr;
 		}
 		@Override public int getRuleIndex() { return RULE_explist1; }
 		@Override
@@ -2339,8 +2188,8 @@ public class gramaticaParser extends Parser {
 		}
 	}
 
-	public final Explist1Context explist1(String expr) throws RecognitionException {
-		Explist1Context _localctx = new Explist1Context(_ctx, getState(), expr);
+	public final Explist1Context explist1() throws RecognitionException {
+		Explist1Context _localctx = new Explist1Context(_ctx, getState());
 		enterRule(_localctx, 60, RULE_explist1);
 		try {
 			setState(332);
@@ -2352,17 +2201,13 @@ public class gramaticaParser extends Parser {
 				setState(327);
 				match(T__9);
 				setState(328);
-				((Explist1Context)_localctx).explist = explist();
-				 ((Explist1Context)_localctx).lista =  ((Explist1Context)_localctx).explist.lista.addFirst(_localctx.expr);
+				explist();
+
 				}
 				break;
 			case T__13:
 				enterOuterAlt(_localctx, 2);
 				{
-
-				           ArrayList<String> lista = new ArrayList<>();
-				            ((Explist1Context)_localctx).lista =  lista.addFirst(_localctx.expr);
-				          
 				}
 				break;
 			default:
@@ -2381,7 +2226,7 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class IncContext extends ParserRuleContext {
-		public OpIncremento incr;
+		public String incr;
 		public IncContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2413,7 +2258,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(334);
 				match(T__30);
-				((IncContext)_localctx).incr =  OpIncremento.TO;
+				((IncContext)_localctx).incr =  "<SPAN CLASS = \"palres\"> TO </SPAN>";
 				}
 				break;
 			case T__31:
@@ -2421,7 +2266,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(336);
 				match(T__31);
-				((IncContext)_localctx).incr =  OpIncremento.DOWNTO;
+				((IncContext)_localctx).incr =  "<SPAN CLASS = \"palres\"> DOWNTO </SPAN>";
 				}
 				break;
 			default:
@@ -2440,7 +2285,7 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class ExpcondContext extends ParserRuleContext {
-		public String expr;
+		public String v;
 		public FactorcondContext factorcond;
 		public Expcond1Context expcond1;
 		public FactorcondContext factorcond() {
@@ -2477,8 +2322,8 @@ public class gramaticaParser extends Parser {
 			setState(340);
 			((ExpcondContext)_localctx).factorcond = factorcond();
 			setState(341);
-			((ExpcondContext)_localctx).expcond1 = expcond1(((ExpcondContext)_localctx).factorcond.fc);
-			((ExpcondContext)_localctx).expr =  ((ExpcondContext)_localctx).expcond1.expr;
+			((ExpcondContext)_localctx).expcond1 = expcond1(((ExpcondContext)_localctx).factorcond.v);
+			((ExpcondContext)_localctx).v =  ((ExpcondContext)_localctx).expcond1.v;
 			}
 		}
 		catch (RecognitionException re) {
@@ -2494,7 +2339,7 @@ public class gramaticaParser extends Parser {
 
 	public static class Expcond1Context extends ParserRuleContext {
 		public String fc;
-		public String expr;
+		public String v;
 		public OplogContext oplog;
 		public ExpcondContext expcond;
 		public OplogContext oplog() {
@@ -2539,7 +2384,7 @@ public class gramaticaParser extends Parser {
 				((Expcond1Context)_localctx).oplog = oplog();
 				setState(345);
 				((Expcond1Context)_localctx).expcond = expcond();
-				((Expcond1Context)_localctx).expr =  _localctx.fc + ((Expcond1Context)_localctx).oplog.opl + ((Expcond1Context)_localctx).expcond.expr;
+				((Expcond1Context)_localctx).v =  _localctx.fc + ((Expcond1Context)_localctx).oplog.opl + ((Expcond1Context)_localctx).expcond.v;
 				}
 				break;
 			case T__1:
@@ -2548,7 +2393,7 @@ public class gramaticaParser extends Parser {
 			case T__20:
 				enterOuterAlt(_localctx, 2);
 				{
-				((Expcond1Context)_localctx).expr =  _localctx.fc;
+				((Expcond1Context)_localctx).v =  _localctx.fc;
 				}
 				break;
 			default:
@@ -2567,7 +2412,7 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class OplogContext extends ParserRuleContext {
-		public OpLogico opl;
+		public String opl;
 		public OplogContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2599,7 +2444,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(351);
 				match(T__32);
-				((OplogContext)_localctx).opl =  OpLogico.OR; 
+				((OplogContext)_localctx).opl = "<SPAN CLASS = \"palres\"> OR </SPAN>"; 
 				}
 				break;
 			case T__33:
@@ -2607,7 +2452,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(353);
 				match(T__33);
-				((OplogContext)_localctx).opl =  OpLogico.AND;
+				((OplogContext)_localctx).opl =  "<SPAN CLASS = \"palres\"> AND </SPAN>";
 				}
 				break;
 			default:
@@ -2626,11 +2471,9 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class FactorcondContext extends ParserRuleContext {
-		public String fc;
+		public String v;
 		public ExpContext expe1;
-		public OpcompContext opcomp;
 		public ExpContext expe2;
-		public ExpcondContext expcond;
 		public FactorcondContext factorcond;
 		public OpcompContext opcomp() {
 			return getRuleContext(OpcompContext.class,0);
@@ -2679,10 +2522,10 @@ public class gramaticaParser extends Parser {
 				setState(357);
 				((FactorcondContext)_localctx).expe1 = exp();
 				setState(358);
-				((FactorcondContext)_localctx).opcomp = opcomp();
+				opcomp();
 				setState(359);
 				((FactorcondContext)_localctx).expe2 = exp();
-				((FactorcondContext)_localctx).fc =  ((FactorcondContext)_localctx).expe1.expr + ((FactorcondContext)_localctx).opcomp.opc + ((FactorcondContext)_localctx).expe2.expr;
+
 				}
 				break;
 			case 2:
@@ -2691,10 +2534,10 @@ public class gramaticaParser extends Parser {
 				setState(362);
 				match(T__12);
 				setState(363);
-				((FactorcondContext)_localctx).expcond = expcond();
+				expcond();
 				setState(364);
 				match(T__13);
-				((FactorcondContext)_localctx).fc =  "("+ ((FactorcondContext)_localctx).expcond.expr +")";
+
 				}
 				break;
 			case 3:
@@ -2704,7 +2547,7 @@ public class gramaticaParser extends Parser {
 				match(T__34);
 				setState(368);
 				((FactorcondContext)_localctx).factorcond = factorcond();
-				((FactorcondContext)_localctx).fc =  "NOT" + ((FactorcondContext)_localctx).factorcond.fc;
+				((FactorcondContext)_localctx).v =  "<SPAN CLASS = \"palres\"> NOT </SPAN>" + ((FactorcondContext)_localctx).factorcond.v;
 				}
 				break;
 			case 4:
@@ -2712,7 +2555,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(371);
 				match(T__35);
-				((FactorcondContext)_localctx).fc =  "TRUE";
+				((FactorcondContext)_localctx).v =  "<SPAN CLASS = \"palres\"> TRUE </SPAN>";
 				}
 				break;
 			case 5:
@@ -2720,7 +2563,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(373);
 				match(T__36);
-				((FactorcondContext)_localctx).fc =  "FALSE";
+				((FactorcondContext)_localctx).v =  "<SPAN CLASS = \"palres\"> FALSE </SPAN>";
 				}
 				break;
 			}
@@ -2737,7 +2580,7 @@ public class gramaticaParser extends Parser {
 	}
 
 	public static class OpcompContext extends ParserRuleContext {
-		public OpComparador opc;
+		public String opc;
 		public OpcompContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -2769,7 +2612,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(377);
 				match(T__37);
-				((OpcompContext)_localctx).opc =  OpComparador.MENOR;
+				((OpcompContext)_localctx).opc =  " < ";
 				}
 				break;
 			case T__38:
@@ -2777,7 +2620,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(379);
 				match(T__38);
-				((OpcompContext)_localctx).opc =  OpComparador.MAYOR;
+				((OpcompContext)_localctx).opc =  " > ";
 				}
 				break;
 			case T__39:
@@ -2785,7 +2628,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(381);
 				match(T__39);
-				((OpcompContext)_localctx).opc =  OpComparador.MENOR_IGUAL;
+				((OpcompContext)_localctx).opc =  " <= ";
 				}
 				break;
 			case T__40:
@@ -2793,7 +2636,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(383);
 				match(T__40);
-				((OpcompContext)_localctx).opc =  OpComparador.MAYOR_IGUAL;
+				((OpcompContext)_localctx).opc =  " >= ";
 				}
 				break;
 			case T__6:
@@ -2801,7 +2644,7 @@ public class gramaticaParser extends Parser {
 				{
 				setState(385);
 				match(T__6);
-				((OpcompContext)_localctx).opc =  OpComparador.IGUAL;
+				((OpcompContext)_localctx).opc =  " = ";
 				}
 				break;
 			default:

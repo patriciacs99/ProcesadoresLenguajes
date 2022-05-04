@@ -1,13 +1,8 @@
 // Generated from C:/Users/patri/IdeaProjects/practicaGrupo23\gramatica.g4 by ANTLR 4.9.2
 
-     import java.io.*;
-     import traduccion.*;
-
-    import java.util.ArrayList;
-    import java.util.List;
-
     import java.io.PrintWriter;
     import java.io.FileWriter;
+
 
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
